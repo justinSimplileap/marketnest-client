@@ -1,21 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Lato', serif;
+}
+
+.custom-shadow {
+  @apply shadow-lg;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.customWidth {
+  width: 90%;
+  margin: auto;
+}
+.lato-thin {
+  font-family: 'Lato', serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.lato-light {
+  font-family: 'Lato', serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.lato-regular {
+  font-family: 'Lato', serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lato-bold {
+  font-family: 'Lato', serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.lato-black {
+  font-family: 'Lato', serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.lato-thin-italic {
+  font-family: 'Lato', serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.lato-light-italic {
+  font-family: 'Lato', serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.lato-regular-italic {
+  font-family: 'Lato', serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.lato-bold-italic {
+  font-family: 'Lato', serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.lato-black-italic {
+  font-family: 'Lato', serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.animation-container {
+  /* position: absolute;
+  top: 23%;
+  left: 101px;
+  animation: fly-to-cart 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  height: 60vh;
+  width: 291;
+  z-index: 99999; */
+  position: absolute;
+  top: -5%;
+  left: 68%;
+  animation: fly-to-cart 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  height: 377px;
+  width: 206px;
+  z-index: 99999;
+}
+
+.animation-image {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+@keyframes fly-to-cart {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(100px, -25px) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(200px, -50px) scale(0.5);
+    opacity: 0;
+  }
 }
