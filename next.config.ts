@@ -6,12 +6,6 @@ const nextConfig: NextConfig = {
     domains: ['res.cloudinary.com'],
     unoptimized: true,
   },
-  remotePatterns: [
-    {
-      protocol: 'https',
-      hostname: '**',
-    },
-  ],
 };
 
 export default nextConfig;
