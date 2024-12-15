@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['res.cloudinary.com'],
+    unoptimized: true,
   },
   remotePatterns: [
     {
