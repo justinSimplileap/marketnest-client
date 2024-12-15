@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       hostname: '**',
     },
   ],
+  output: 'export',
 };
 
 export default nextConfig;
