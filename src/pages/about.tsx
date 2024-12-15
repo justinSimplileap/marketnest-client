@@ -19,7 +19,11 @@ const About: React.FC = () => {
             transition={{ duration: 1 }}
             className="absolute right-[-20%] top-[20%] bg-opacity-50 bg-cover bg-center"
           >
-            <Image src={AI} alt="ai" className="object-cover w-full h-full" />
+            <Image
+              src={AI}
+              alt="ai"
+              className="object-cover w-full h-full hidden md:block"
+            />
           </motion.div>
           <div className="relative px-6 py-20 lg:py-32">
             <div className="max-w-4xl mx-auto text-center">
@@ -76,7 +80,7 @@ const About: React.FC = () => {
         </motion.div>
 
         {/* Team Section */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2 }}
@@ -109,7 +113,7 @@ const About: React.FC = () => {
               ))}
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Testimonials Section */}
         <motion.div

@@ -4,6 +4,7 @@ type User = {
   id: string;
   name: string;
   avatarUrl: string;
+  email: string;
 };
 
 type Notification = {
@@ -68,8 +69,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateCartItemCount = (count: number) => {
-    // You can keep a separate state to track the cart item count
-    // or directly calculate it from the cart length
     localStorage.setItem('cartItemCount', JSON.stringify(count));
   };
 
@@ -79,6 +78,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         user,
         cart,
         notifications,
+
         setUser,
         addNotification,
         markNotificationAsRead,

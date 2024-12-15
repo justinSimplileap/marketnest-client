@@ -93,7 +93,7 @@ body {
   position: absolute;
   top: -5%;
   left: 68%;
-  animation: fly-to-cart 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  animation: fly-to-cart 3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
   height: 377px;
   width: 206px;
   z-index: 99999;
@@ -118,4 +118,8 @@ body {
     transform: translate(200px, -50px) scale(0.5);
     opacity: 0;
   }
+}
+
+.orderDetaillsCard {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }

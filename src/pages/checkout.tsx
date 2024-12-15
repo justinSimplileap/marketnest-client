@@ -1,24 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import Footer from '@/components/home/Footer';
 import MainLayout from '@/components/layout/MainLayout';
+
+import PaymentPage from '@/components/Payment';
+import Addresses from '@/components/address/addresses';
+import { useState } from 'react';
+
+interface GalleryImage {
+  imageUrl: string;
+  orderBy: string | number;
+}
 
 interface CartItem {
   id: number;
   name: string;
   price: number;
+  quantity: number;
+  images: GalleryImage[];
   stock: number;
+  product: any;
+  userId: string;
+  discountPrice: string;
+  variantPrice: string;
 }
-
 interface ShippingDetails {
+  id?: number;
   name: string;
   address: string;
   city: string;
-  postalCode: string;
+  pincode: string;
   country: string;
-  mobileNumber: string;
-  flatAddress: string;
-  areaStreet: string;
+  phoneNumber: string;
+  flatHouseBuilding: string;
+  areaStreetSectorVillage: string;
   landmark: string;
   townCity: string;
   state: string;
@@ -29,33 +44,10 @@ const Checkout: React.FC = () => {
   const { cart } = router.query;
 
   const parsedCart: CartItem[] = cart ? JSON.parse(cart as string) : [];
+  const [selectedAddress, setSelectedAddress] =
+    useState<ShippingDetails | null>(null);
 
-  const [shippingDetails, setShippingDetails] = useState<ShippingDetails>({
-    name: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: 'India',
-    mobileNumber: '',
-    flatAddress: '',
-    areaStreet: '',
-    landmark: '',
-    townCity: '',
-    state: '',
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setShippingDetails((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Shipping Details:', shippingDetails);
-    console.log('Order Details:', parsedCart);
-  };
+  console.log('parsedCart', parsedCart);
 
   // Helper function to format currency in INR format
   const formatCurrency = (amount: number) => {
@@ -69,155 +61,108 @@ const Checkout: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="customWidth mx-auto py-10 px-4">
-        <h1 className="text-3xl font-semibold mb-6 text-center">Checkout</h1>
+      <div className="customWidth mx-auto pt-4">
+        <h2 className="text-3xl font-semibold mb-6 text-center">Checkout</h2>
 
-        <div className="flex space-x-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 mb-8  gap-8">
+          <div className="space-y-4 col-span-2 orderDetaillsCard p-4 rounded-xl">
+            {/* Section 1 */}
+            <Addresses setSelectedAddress={setSelectedAddress} />
+            <div className=" flex flex-col gap-4">
+              <div className="flex gap-4">
+                <p className=" h-10 w-10 border rounded-full flex justify-center items-center">
+                  02
+                </p>
+                <p className=" text-2xl font-semibold"> Payment</p>
+              </div>
+
+              {/* Section 2 */}
+
+              <PaymentPage
+                totalAmount={parsedCart.reduce(
+                  (total, item) =>
+                    total + parseFloat(item?.discountPrice) * item.quantity,
+                  0
+                )}
+                cartItems={parsedCart}
+                selectedAddress={selectedAddress}
+              />
+            </div>
+          </div>
           {/* Order Details */}
-          <div className="flex-1 space-y-4">
+          <div className=" sticky top-4 h-fit orderDetaillsCard p-4 rounded-lg">
             <h2 className="text-2xl font-semibold">Order Details</h2>
             {parsedCart.length > 0 ? (
               parsedCart.map((item) => (
-                <div key={item.id} className="flex justify-between py-2">
-                  <p>{item.name}</p>
-                  <p>
-                    {formatCurrency(item.price)} x {item.stock}
-                  </p>
+                <div key={item.id} className="flex flex-col  py-2">
+                  <div className="flex justify-between w-full">
+                    <p>Item Name:</p>
+                    <p>{item?.product?.name}</p>
+                  </div>
+                  <div className="flex justify-between w-full">
+                    <p>Actual Price</p>
+                    <p>
+                      {formatCurrency(parseFloat(item?.variantPrice))}
+                      {item?.quantity}
+                    </p>
+                  </div>
+                  <div className="flex justify-between w-full">
+                    <p>Discount Price</p>
+                    <p>
+                      {formatCurrency(
+                        parseFloat(item?.variantPrice) -
+                          parseFloat(item?.discountPrice)
+                      )}
+                      {item?.quantity}
+                    </p>
+                  </div>
                 </div>
               ))
             ) : (
               <p>No items in the cart</p>
             )}
+            {selectedAddress ? (
+              <div className="as">
+                <div className="flex items-center justify-between my-1">
+                  <p className=" font-semibold">User:</p>
+                  <p className="font-medium">{selectedAddress.name}</p>
+                </div>
 
-            <div className="border-t pt-4">
-              <p className="text-xl font-semibold">
-                Total:{' '}
+                <div className="border-t pt-4">
+                  <p className=" font-semibold">Shipping address:</p>
+
+                  <p>
+                    {selectedAddress.flatHouseBuilding},{' '}
+                    {selectedAddress.areaStreetSectorVillage}
+                  </p>
+                  <p>
+                    {selectedAddress.townCity}, {selectedAddress.state} -{' '}
+                    {selectedAddress.pincode}
+                  </p>
+                  <p>{selectedAddress.country}</p>
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
+
+            <div className="border-t pt-4 flex justify-between items-center w-full text-xl font-semibold">
+              <p>Total:</p>
+              <p>
                 {formatCurrency(
                   parsedCart.reduce(
-                    (total, item) => total + item.price * item.stock,
+                    (total, item) =>
+                      total + parseFloat(item?.discountPrice) * item?.quantity,
                     0
                   )
                 )}
               </p>
             </div>
           </div>
-
-          {/* Shipping Details */}
-          <div className="flex-1">
-            <h2 className="text-2xl font-semibold">Shipping Details</h2>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-              {/* Full Name */}
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={shippingDetails.name}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              />
-
-              {/* Mobile Number */}
-              <input
-                type="text"
-                name="mobileNumber"
-                placeholder="Mobile number"
-                value={shippingDetails.mobileNumber}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              />
-
-              {/* Pincode */}
-              <input
-                type="text"
-                name="postalCode"
-                placeholder="Pincode"
-                value={shippingDetails.postalCode}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              />
-
-              {/* Flat Address */}
-              <input
-                type="text"
-                name="flatAddress"
-                placeholder="Flat, House no., Building, Company, Apartment"
-                value={shippingDetails.flatAddress}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              />
-
-              {/* Area/Street */}
-              <input
-                type="text"
-                name="areaStreet"
-                placeholder="Area, Street, Sector, Village"
-                value={shippingDetails.areaStreet}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              />
-
-              {/* Landmark */}
-              <input
-                type="text"
-                name="landmark"
-                placeholder="Landmark (e.g., near Apollo hospital)"
-                value={shippingDetails.landmark}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              />
-
-              {/* Town/City */}
-              <input
-                type="text"
-                name="townCity"
-                placeholder="Town/City"
-                value={shippingDetails.townCity}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              />
-
-              {/* State */}
-              <select
-                name="state"
-                value={shippingDetails.state}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              >
-                <option value="">Choose a state</option>
-                <option value="Karnataka">Karnataka</option>
-                {/* Add more states as needed */}
-              </select>
-
-              {/* Country */}
-              <select
-                name="country"
-                value={shippingDetails.country}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300"
-                required
-              >
-                <option value="India">India</option>
-                {/* Add more countries as needed */}
-              </select>
-
-              <button
-                type="submit"
-                className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Update Address
-              </button>
-            </form>
-          </div>
         </div>
+        {/* end of section  */}
       </div>
+
       <Footer />
     </MainLayout>
   );

@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
 import MainLayout from '@/components/layout/MainLayout';
 import Footer from '@/components/home/Footer';
+import MailWolf from '@/assets/General/mail-wolf.png';
+import PhoneWolf from '@/assets/General/phone-wolf.png';
+import LocationWolf from '@/assets/General/location-wolf.png';
+import Image from 'next/image';
 
 const Contact: React.FC = () => {
   return (
@@ -47,8 +51,12 @@ const Contact: React.FC = () => {
             {/* Contact Details */}
             <div className="space-y-6">
               <div className="flex items-center space-x-6 bg-gray-100 p-4 rounded-xl shadow-sm hover:shadow-lg transition-all">
-                <div className="bg-teal-500 text-white p-3 rounded-full">
-                  <i className="fas fa-map-marker-alt"></i>
+                <div className="">
+                  <Image
+                    className="w-[140px] h-[140px] object-contain"
+                    src={LocationWolf}
+                    alt="Location Wolf"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-gray-800">
@@ -58,8 +66,12 @@ const Contact: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center space-x-6 bg-gray-100 p-4 rounded-xl shadow-sm hover:shadow-lg transition-all">
-                <div className="bg-teal-500 text-white p-3 rounded-full">
-                  <i className="fas fa-phone-alt"></i>
+                <div className="">
+                  <Image
+                    className="w-[140px] h-[140px] object-contain"
+                    src={PhoneWolf}
+                    alt="Location Wolf"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-gray-800">
@@ -72,8 +84,12 @@ const Contact: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center space-x-6 bg-gray-100 p-4 rounded-xl shadow-sm hover:shadow-lg transition-all">
-                <div className="bg-teal-500 text-white p-3 rounded-full">
-                  <i className="fas fa-envelope"></i>
+                <div className="">
+                  <Image
+                    className="w-[140px] h-[140px] object-contain"
+                    src={MailWolf}
+                    alt="Location Wolf"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-gray-800">

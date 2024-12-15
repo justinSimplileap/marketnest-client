@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 // import TopbarNotifications from './TopbarNotifications';
-import TopbarSearch from './TopbarSearch';
+// import TopbarSearch from './TopbarSearch';
 import TopbarUserMenu from './TopbarUserMenu';
 import Image from 'next/image';
-import Logo from '@/assets/Logo/jpmarket.png';
+import Logo from '@/assets/Logo/venom-wolf-logo1.png';
 import Cart from '@/assets/Logo/cart.svg';
 import { useCartContext } from '@/context/CartContext';
 
@@ -16,16 +16,18 @@ const Topbar: React.FC = () => {
   const [cartItemCount, setCartItemCount] = useState<number>(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Update cartItemCount whenever the cart changes
   useEffect(() => {
-    setCartItemCount(cart.reduce((sum, item) => sum + (item.stock || 1), 0));
+    const itemCount = Array.isArray(cart)
+      ? cart.reduce((sum, item) => sum + (item.quantity || 1), 0)
+      : 0;
 
-    // Trigger animation for 1 second whenever cartItemCount changes
+    setCartItemCount(itemCount);
+
     if (cartItemCount > 0) {
       setIsAnimating(true);
       setTimeout(() => setIsAnimating(false), 1000);
     }
-  }, [cart]); // Only depend on cart, not cartItemCount
+  }, [cart]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,15 +61,13 @@ const Topbar: React.FC = () => {
         <div className="">
           <Link href="/">
             <div className="flex gap-2 items-center">
-              <Image src={Logo} className="h-16 w-16" alt="MarketNest" />
-              <span>|</span>
-              <span className="whitespace-nowrap">Market Nest</span>
+              <Image src={Logo} className="h-auto w-24" alt="MarketNest" />
             </div>
           </Link>
         </div>
 
         {/* Desktop Menu */}
-        <nav className="hidden sm:flex gap-10 font-medium text-base">
+        <nav className="hidden sm:flex gap-10 font-medium text-lg">
           <Link
             href="/"
             className="hover:text-gray-500 dark:hover:text-gray-300"
@@ -92,11 +92,17 @@ const Topbar: React.FC = () => {
           >
             Login
           </Link>
+          <Link
+            href="/cart"
+            className="hover:text-gray-500 dark:hover:text-gray-300"
+          >
+            Wolf Bag
+          </Link>
         </nav>
 
-        <div className="hidden sm:flex w-[400px]">
+        {/* <div className="hidden sm:flex w-[400px]">
           <TopbarSearch />
-        </div>
+        </div> */}
 
         {/* Right Section (Search, Notifications, User Menu, Cart) */}
         <div className="flex items-center space-x-4">
@@ -132,23 +138,20 @@ const Topbar: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-800 shadow-md sm:hidden">
-            <div className="p-4 border-b">
-              <TopbarSearch />
-            </div>
-            <nav className="flex flex-col p-4 space-y-2">
+          <div className="absolute top-full left-0 w-full  bg-white shadow-md sm:hidden">
+            <nav className="flex flex-col items-center text-2xl gap-8 px-4 py-8 ">
               <Link
                 href="/"
                 className="hover:text-gray-500 dark:hover:text-gray-300"
               >
                 Home
               </Link>
-              <Link
+              {/* <Link
                 href="/deals"
                 className="hover:text-gray-500 dark:hover:text-gray-300"
               >
                 Deals
-              </Link>
+              </Link> */}
               <Link
                 href="/contact"
                 className="hover:text-gray-500 dark:hover:text-gray-300"

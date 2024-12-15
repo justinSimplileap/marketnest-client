@@ -15,12 +15,27 @@ interface images {
   orderBy: string | number;
 }
 
+interface Variant {
+  id: number;
+  color: string;
+  ramSize: string;
+  size: string;
+  storage: string;
+  sku: string;
+  barcode: string;
+  variantPrice: string;
+  discountPrice: string;
+  quantity: number;
+  isFeatured: boolean;
+}
+
 // Define the product data structure
 interface Product {
   id: number;
   name: string;
   price: string;
   description: string;
+  variants: Variant[];
   images: images[];
   category: { name: string };
   brand: { name: string };
@@ -95,7 +110,7 @@ export const getCategories = async (): Promise<Category[]> => {
     const response = await ProtectedAxiosInstance.get('/category/category/all');
     return response?.data?.data;
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    // console.error('Error fetching categories:', error);
     throw error;
   }
 };

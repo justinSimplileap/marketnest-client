@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // utils/errorResponse.ts
 export const handleErrorResponse = (error: any) => {
   let errorMessage = 'An error occurred';

@@ -87,7 +87,7 @@ const BestDealsSection = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{product.name}</h3>
                 <p className="text-gray-600 text-sm">
-                  Starts from ${product.price}
+                  Starts from ₹{product.price}
                 </p>
               </div>
             </motion.div>

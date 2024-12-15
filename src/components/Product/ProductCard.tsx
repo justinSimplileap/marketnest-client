@@ -9,6 +9,8 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const productImage = product?.images?.[0]?.imageUrl || '/assets/default.png';
 
+  console.log('product', product);
+
   function formatPrice(price: number | string): string {
     if (isNaN(Number(price))) {
       return '0';
@@ -30,7 +32,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <h2 className="text-lg font-semibold mt-4">{product?.name}</h2>
         <p className="text-gray-700 mt-2">
           {' '}
-          ₹{product?.price ? formatPrice(product?.price) : '0'}
+          ₹
+          {product?.price
+            ? formatPrice(product?.variants[0]?.discountPrice)
+            : '0'}
         </p>
       </div>
     </Link>

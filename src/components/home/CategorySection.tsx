@@ -107,7 +107,7 @@ const CategorySection = () => {
 
   return (
     <section className="py-10 bg-[#f8f9fa]">
-      <div className="container mx-auto px-4">
+      <div className="customWidth mx-auto px-4">
         <h2 className="text-2xl font-bold text-center mb-8">
           Shop by Category
         </h2>
@@ -129,7 +129,7 @@ const CategorySection = () => {
               variants={scaleUp}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-32  w-full mb-3 flex ">
+              <div className="relative md:h-32 h-12  w-full mb-3 flex ">
                 <Image
                   src={categoryImages[category.name] || '/assets/default.png'}
                   alt={category.name}

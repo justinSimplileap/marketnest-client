@@ -1,9 +1,23 @@
 import { useAppContext } from '@/context/AppContext';
+import { addProductCart } from '@/services/api/cart';
 import Image from 'next/image';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-interface GalleryImage {
+interface ProductVariant {
+  barcode?: null;
+  color: string;
+  discountPrice: string;
+  isFeatured: false;
+  quantity: number;
+  ramSize: null;
+  size: string;
+  sku: null;
+  storage: string;
+  variantPrice: string;
+}
+
+interface images {
   imageUrl: string;
   orderBy: string | number;
 }
@@ -12,35 +26,69 @@ interface Product {
   id: number;
   name: string;
   price: string;
-  images: GalleryImage[];
+  images: images[];
+  variants: ProductVariant[];
   quantity?: number;
   stock?: number;
 }
 
 interface ProductActionsProps {
   product: Product;
+  selectedVariant: ProductVariant;
   updateCartItemCount: (count: number) => void;
 }
+interface ProductWithVariant extends Product {
+  selectedVariant: ProductVariant;
+}
 
-const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
-  const { cart, addToCart, updateCartItemCount } = useAppContext();
+const ProductActions: React.FC<ProductActionsProps> = ({
+  product,
+  selectedVariant,
+  updateCartItemCount,
+}) => {
+  const { cart, addToCart } = useAppContext();
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const handleAddToCart = () => {
+  console.log('selectedVariant', selectedVariant);
+  console.log('product', product);
+
+  const handleAddToCart = async () => {
     setIsAnimating(true);
 
-    // Using the addToCart function from the context
-    addToCart(product);
+    const productId = product.id;
+    const quantity = 1;
 
-    // Update the cart item count after adding the product
-    updateCartItemCount(cart.reduce((sum, item) => sum + (item.stock || 1), 0));
+    const { color, size, storage, discountPrice, variantPrice } =
+      selectedVariant;
 
-    toast.success('Product added to cart!');
-    setTimeout(() => setIsAnimating(false), 1000);
-  };
+    try {
+      const response = await addProductCart(
+        productId,
+        quantity,
+        color,
+        size,
+        storage,
+        discountPrice,
+        variantPrice
+      );
 
-  const handleBuyNow = () => {
-    toast.success('Proceeding to checkout');
+      if (response.status === 'success') {
+        addToCart({ ...product, selectedVariant } as ProductWithVariant);
+        updateCartItemCount(
+          cart.reduce((sum, item) => sum + (item.stock || 1), 0)
+        );
+      } else {
+        toast.error(response.message || 'Failed to add product to cart');
+      }
+    } catch (error) {
+      toast.error('There was an error adding the product to the cart');
+      console.log('error', error);
+    } finally {
+      setTimeout(() => {
+        setIsAnimating(false);
+        toast.success('Product added to cart!');
+      }, 1000);
+    }
   };
 
   return (
@@ -50,12 +98,6 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
         className="bg-blue-500 text-white px-4 py-2 rounded-lg"
       >
         Add to Cart
-      </button>
-      <button
-        onClick={handleBuyNow}
-        className="bg-green-500 text-white px-4 py-2 rounded-lg"
-      >
-        Buy Now
       </button>
       {isAnimating && (
         <div className="absolute animation-container">

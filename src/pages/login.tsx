@@ -1,18 +1,53 @@
-// src/pages/login.tsx
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import AuthLayout from '@/components/layout/AuthLayout';
 import Image from 'next/image';
-import Logo from '@/assets/Logo/jpmarket.png';
+import Logo from '@/assets/Logo/venom-wolf-logo1.png';
 import LoginGif from '@/assets/General/Login.gif';
+import { useForm } from 'react-hook-form';
+import { login } from '@/services/api/auth';
+import LocalStorageService from '@/services/LocalStorageService';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+interface LoginFormInputs {
+  email: string;
+  password: string;
+}
 
 const Login: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormInputs>();
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const onSubmit = async (data: LoginFormInputs) => {
+    try {
+      const response = await login(data);
+      if (response.status === 'success') {
+        const { token, jpid } = response.data;
+
+        LocalStorageService.setToken(token);
+        LocalStorageService.setItem('jpid', jpid);
+
+        router.push('/');
+      } else {
+        setErrorMessage(response.message || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <AuthLayout>
-      <div className="grid grid-cols-2 h-full items-center ">
-        <div className=" flex justify-center items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2  h-full items-center">
+        <div className="flex justify-center items-center">
           <motion.div
-            className="bg-white p-8  max-w-md w-full"
+            className="bg-white p-8 max-w-md w-full"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -20,9 +55,7 @@ const Login: React.FC = () => {
             <div className="mb-2">
               <Link href="/">
                 <div className="flex gap-2 items-center w-full justify-center">
-                  <Image src={Logo} className="h-20 w-20" alt="MarketNest" />
-                  <span>|</span>
-                  <span className="whitespace-nowrap">Market Nest</span>
+                  <Image src={Logo} className="h-20 w-auto" alt="MarketNest" />
                 </div>
               </Link>
             </div>
@@ -34,7 +67,7 @@ const Login: React.FC = () => {
             </p>
 
             {/* Form */}
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <motion.div
                 className="mb-4"
                 initial={{ opacity: 0, x: -20 }}
@@ -50,11 +83,26 @@ const Login: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  name="email"
-                  className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value:
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      message: 'Invalid email address',
+                    },
+                  })}
+                  className={`mt-1 p-2 w-full border rounded-md focus:ring-2 ${
+                    errors.email
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:ring-blue-500'
+                  }`}
                   placeholder="you@example.com"
-                  required
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </motion.div>
 
               <motion.div
@@ -72,12 +120,32 @@ const Login: React.FC = () => {
                 <input
                   type="password"
                   id="password"
-                  name="password"
-                  className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: {
+                      value: 6,
+                      message: 'Password must be at least 6 characters',
+                    },
+                  })}
+                  className={`mt-1 p-2 w-full border rounded-md focus:ring-2 ${
+                    errors.password
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:ring-blue-500'
+                  }`}
                   placeholder="••••••••"
-                  required
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
               </motion.div>
+
+              {errorMessage && (
+                <p className="text-red-500 text-sm text-center mt-4">
+                  {errorMessage}
+                </p>
+              )}
 
               {/* Login Button */}
               <motion.button
@@ -86,8 +154,9 @@ const Login: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
+                disabled={isSubmitting}
               >
-                Log In
+                {isSubmitting ? 'Logging In...' : 'Log In'}
               </motion.button>
             </form>
 
@@ -102,12 +171,12 @@ const Login: React.FC = () => {
             </div>
           </motion.div>
         </div>
-        <div className=" h-full bg-black flex justify-center items-center">
+        <div className="h-full bg-black flex justify-center items-center">
           <Image
             src={LoginGif}
             alt="LoginGif"
             priority
-            className=" h-[100%] w-auto"
+            className="h-[100%] w-auto"
           />
         </div>
       </div>

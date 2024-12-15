@@ -43,9 +43,7 @@ const TopbarUserMenu: React.FC = () => {
         className="focus:outline-none"
       >
         <Image
-          width={40}
-          height={40}
-          className=" rounded-full object-cover object-center"
+          className=" h-16 w-auto drop-shadow-lg rounded-full object-cover object-center"
           src={user?.avatarUrl || DefaultImage}
           alt="Profile"
         />
@@ -55,24 +53,24 @@ const TopbarUserMenu: React.FC = () => {
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg rounded-md">
           <ul className="py-2">
-            <li
+            {/* <li
               onClick={() => handleNavigation('/profile')}
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
             >
               Profile
-            </li>
+            </li> */}
             <li
               onClick={() => handleNavigation('/orders')}
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
             >
               Orders
             </li>
-            <li
+            {/* <li
               onClick={() => handleNavigation('/settings')}
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
             >
               Settings
-            </li>
+            </li> */}
             <li
               onClick={() => handleNavigation('/logout')}
               className="px-4 py-2 text-red-600 hover:bg-gray-100 cursor-pointer"

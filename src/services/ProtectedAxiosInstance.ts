@@ -2,10 +2,9 @@ import axios from 'axios';
 
 // Create a Protected Axios instance with default configurations
 const ProtectedAxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // Base URL from environment variables
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    // Add any other default headers here if needed
   },
 });
 
@@ -31,7 +30,7 @@ ProtectedAxiosInstance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       // Unauthorized, maybe redirect to login page
-      window.location.href = '/auth/login';
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

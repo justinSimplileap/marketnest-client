@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import Logo from '@/assets/Logo/jpmarket.png';
+import Logo from '@/assets/Logo/venom-wolf-logo1.png';
 import Link from 'next/link';
 import Whatsapp from '@/assets/social-media/whatsapp.png';
 import LinkedIn from '@/assets/social-media/linkedin.png';
@@ -10,14 +10,12 @@ const Footer = () => (
     <div className="customWidth mx-auto px-4">
       <div className="flex justify-between flex-wrap gap-8 items-center">
         {/* Logo and About Section */}
-        <div className="w-[25%]">
-          <div className="">
+        <div className="md:w-[25%] text-center">
+          <div className="mb-2">
             <Link href="/">
               {/* <Image src={Logo} className="  h-full w-full" alt="MarketNest" /> */}
-              <div className="flex gap-2 items-center">
-                <Image src={Logo} className=" h-28 w-28" alt="MarketNest" />{' '}
-                <span>|</span>
-                <span className=" whitespace-nowrap">Market Nest</span>
+              <div className="flex gap-2 items-center justify-center">
+                <Image src={Logo} className=" h-auto w-36" alt="MarketNest" />{' '}
               </div>
             </Link>
           </div>

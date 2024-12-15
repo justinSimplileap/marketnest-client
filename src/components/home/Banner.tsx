@@ -13,7 +13,7 @@ import Banner4 from '@/assets/General/banner4.png';
 
 const Banner = () => {
   return (
-    <div className="h-[70vh] w-full p-6 ">
+    <div className=" lg:h-[70vh] h-[40vh] w-full p-6 ">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={0}
