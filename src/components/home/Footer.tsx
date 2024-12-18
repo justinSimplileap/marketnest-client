@@ -58,22 +58,22 @@ const Footer = () => (
           <p>
             Phone:{' '}
             <a
-              href="tel:+919108264719"
+              href="tel:+919148140100"
               className="text-blue-500 hover:underline"
             >
-              +91 9108264719
+              +91 9148140100
             </a>
           </p>
           <p>
             Email:{' '}
             <a
-              href="mailto:justinjjp36@gmail.com"
+              href="mailto:info@venomwolf.com"
               className="text-blue-500 hover:underline"
             >
-              justinjjp36@gmail.com
+              info@venomwolf.com
             </a>
           </p>
-          <p>Address: 123 Main Street, City, Country</p>
+          <p>Address: Kotur, muthsandra main road bangalore 560087</p>
         </div>
 
         {/* Social Media */}

@@ -6,10 +6,8 @@ import 'swiper/css';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 // Import your images
-import Banner1 from '@/assets/General/banner1.png';
-import Banner2 from '@/assets/General/banner2.png';
-import Banner3 from '@/assets/General/banner3.png';
-import Banner4 from '@/assets/General/banner4.png';
+import Banner1 from '@/assets/General/2151833076.jpg';
+import Banner2 from '@/assets/General/2151833112.jpg';
 
 const Banner = () => {
   return (
@@ -38,26 +36,6 @@ const Banner = () => {
           <Image
             src={Banner2}
             alt="Banner 2"
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-            className="w-full h-full"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Image
-            src={Banner3}
-            alt="Banner 3"
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-            className="w-full h-full"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Image
-            src={Banner4}
-            alt="Banner 4"
             layout="fill"
             objectFit="cover"
             objectPosition="center"

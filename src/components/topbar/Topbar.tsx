@@ -15,6 +15,12 @@ const Topbar: React.FC = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [cartItemCount, setCartItemCount] = useState<number>(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, []);
 
   useEffect(() => {
     const itemCount = Array.isArray(cart)
@@ -86,12 +92,14 @@ const Topbar: React.FC = () => {
           >
             About
           </Link>
-          <Link
-            href="/login"
-            className="hover:text-gray-500 dark:hover:text-gray-300"
-          >
-            Login
-          </Link>
+          {!isAuthenticated && (
+            <Link
+              href="/login"
+              className="hover:text-gray-500 dark:hover:text-gray-300"
+            >
+              Login
+            </Link>
+          )}
           <Link
             href="/cart"
             className="hover:text-gray-500 dark:hover:text-gray-300"
